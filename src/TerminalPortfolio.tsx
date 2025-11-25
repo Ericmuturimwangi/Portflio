@@ -181,6 +181,24 @@ control, task tracking, and reporting dashboards
 
 Type 'cd home' to return to main menu
       `
+    },
+    resume: {
+      title: 'Resume',
+      content: `
+╔════════════════════════════════════════╗
+║            RESUME                      ║
+╚════════════════════════════════════════╝
+
+📄 Download my resume to learn more about my
+   qualifications and experience.
+
+Commands:
+  → Type 'download resume' to download my CV
+  → Type 'view resume' to open in new tab
+
+File: Eric_Mwangi_Resume.pdf
+Size: Professional CV with complete work history
+      `
     }
   };
 
@@ -189,6 +207,21 @@ Type 'cd home' to return to main menu
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
   }, [commandHistory]);
+
+    const downloadResume = () => {
+    
+    const link = document.createElement('a');
+    link.href = '/Eric_Mwangi_Resume.pdf'; 
+    link.download = 'Eric_Mwangi_Resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const viewResume = () => {
+  
+    window.open('/resume.pdf', '_blank');
+  };
 
   const executeCommand = (cmd: string): void => {
     const trimmedCmd = cmd.trim().toLowerCase();
@@ -209,8 +242,10 @@ Available commands:
   clear              - Clear terminal
   help               - Show this help message
   whoami             - Display current section
+  download resume    - Download my resume (PDF)
+  view resume        - View resume in new tab
 
-Available sections: home, about, skills, education, experience, projects
+Available sections: home, about, skills, education, experience, projects, resume
         `
       });
     } else if (trimmedCmd === 'ls') {
@@ -226,6 +261,18 @@ Available sections: home, about, skills, education, experience, projects
       newHistory.push({
         type: 'output',
         text: `Current section: ${currentSection}`
+      });
+    } else if (trimmedCmd === 'download resume') {
+      downloadResume();
+      newHistory.push({
+        type: 'output',
+        text: `✓ Downloading resume: Eric_Mwangi_Resume.pdf`
+      });
+    } else if (trimmedCmd === 'view resume') {
+      viewResume();
+      newHistory.push({
+        type: 'output',
+        text: `✓ Opening resume in new tab...`
       });
     } else if (trimmedCmd.startsWith('cd ')) {
       const target = trimmedCmd.substring(3).trim();
@@ -325,7 +372,7 @@ Available sections: home, about, skills, education, experience, projects
 
         {/* Quick Tips */}
         <div className="mt-4 text-center text-gray-500 text-sm">
-          💡 Tip: Press Tab for autocomplete • Click anywhere in the terminal to focus
+          💡 Tip: Press Tab for autocomplete • Type 'download resume' to get my resume
         </div>
       </div>
     </div>
